@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Home } from './components/Home';
+import { Home } from './components/Organisms/Home/Home';
 import { theme } from './services/theme';
 import { ThemeProvider } from 'styled-components';
 
