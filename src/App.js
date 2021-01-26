@@ -1,10 +1,16 @@
 import React from 'react';
 import { render } from 'react-dom';
+import { Home } from './components/Home';
+import { theme } from './services/theme';
+import { ThemeProvider } from 'styled-components';
 
-class App extends React.Component {
-    render() {
-        return <h1>Menu Test</h1>;
-    }
-}
+export const App = () => {
+    return <Home />;
+};
 
-render(<App />, document.getElementById('root'));
+render(
+    <ThemeProvider theme={theme}>
+        <App />
+    </ThemeProvider>,
+    document.getElementById('root')
+);
