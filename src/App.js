@@ -4,19 +4,21 @@ import { Home } from './components/Organisms/Home/Home';
 import { theme } from './services/theme';
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyle } from './globalStyle';
+import { ProvidersInjector } from './ProvidersInjector';
+import { StepStoreProvider } from './store/stepsStore/provider';
+import { GuestsStoreProvider } from './store/guestsStore/provider';
+
+const storeProviders = [StepStoreProvider, GuestsStoreProvider];
 
 export const App = () => {
     return (
-        <>
-            <GlobalStyle />
-            <Home />
-        </>
+        <ProvidersInjector providers={storeProviders}>
+            <ThemeProvider theme={theme}>
+                <GlobalStyle />
+                <Home />
+            </ThemeProvider>
+        </ProvidersInjector>
     );
 };
 
-render(
-    <ThemeProvider theme={theme}>
-        <App />
-    </ThemeProvider>,
-    document.getElementById('root')
-);
+render(<App />, document.getElementById('root'));

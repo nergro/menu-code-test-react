@@ -22,8 +22,13 @@ export const Button = styled.button`
     color: ${(props) => props.theme.colors.button.default.textColor};
     background: ${(props) => props.theme.colors.button.default.backgroundColor};
 
-    &:hover {
+    &:hover:enabled {
         color: ${(props) => props.theme.colors.button.hover.textColor};
         background: ${(props) => props.theme.colors.button.hover.backgroundColor};
+    }
+
+    &:disabled {
+        opacity: 0.4;
+        cursor: unset;
     }
 `;

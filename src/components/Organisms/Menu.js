@@ -1,7 +1,12 @@
-import React, { Fragment } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import menuData from '../../../menu-data.json';
 import { MenuSection } from '../Molecules/MenuSection';
+import {
+    useDispatch as useGuestsDispatch,
+    useState as useGuestsState,
+} from '../../store/guestsStore/hooks';
+import { NavigationButtons } from '../Molecules/NavigationButtons';
 
 const Container = styled.div`
     display: flex;
@@ -23,6 +28,7 @@ const GuestButton = styled.button`
         props.isActive ? props.theme.colors.accents.primary : props.theme.colors.accents.secondary};
     cursor: pointer;
     transition: all 0.3s ease;
+    outline: none;
 
     &:not(:last-child) {
         margin-right: 10px;
@@ -34,19 +40,26 @@ const GuestButton = styled.button`
 `;
 
 export const Menu = () => {
-    const guests = ['John', 'Jessica'];
+    const guestsState = useGuestsState();
+    const [activeGuest, setActiveGuest] = useState(guestsState[0]);
+
     return (
         <Container>
             <Guests>
-                {guests.map((guest, i) => (
-                    <GuestButton key={guest + i} isActive={i % 2 === 0}>
-                        {guest}
+                {guestsState.map((guest) => (
+                    <GuestButton
+                        key={guest.id}
+                        isActive={guest.id === activeGuest.id}
+                        onClick={() => setActiveGuest(guest)}
+                    >
+                        {guest.name}
                     </GuestButton>
                 ))}
             </Guests>
             {Object.keys(menuData).map((key) => (
                 <MenuSection key={key} dishes={menuData[key]} title={key} />
             ))}
+            <NavigationButtons />
         </Container>
     );
 };
