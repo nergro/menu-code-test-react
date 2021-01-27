@@ -5,13 +5,9 @@ const sizes = {
         desktop: '16px',
         mobile: '16px',
     },
-    medium: {
-        desktop: '20px',
-        mobile: '16px',
-    },
 };
 
-export const P = styled.p`
+export const Span = styled.span`
     color: ${(props) => props.theme.colors.text[props.color || 'main']};
     font-family: ${(props) => props.theme.fontFamily[props.font || 'Main']};
     font-weight: ${(props) => props.weight || '400'};

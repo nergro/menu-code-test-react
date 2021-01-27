@@ -21,6 +21,7 @@ export const theme = {
         button: {
             default: {
                 textColor: '#FFFFFF',
+                border: '#AAAAAA',
                 backgroundColor: primaryAccent,
             },
             hover: {
@@ -33,7 +34,9 @@ export const theme = {
         Main: '"Roboto", Sans-serif',
     },
     fonts: {
+        mediumTextSemiBold: '500 20px Roboto, Sans-serif',
         normalText: '400 16px Roboto, Sans-serif',
+        smallText: '400 14px Roboto, Sans-serif',
     },
     breakpoints: {
         sm: '450px',

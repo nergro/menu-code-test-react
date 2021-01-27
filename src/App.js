@@ -3,9 +3,15 @@ import { render } from 'react-dom';
 import { Home } from './components/Organisms/Home/Home';
 import { theme } from './services/theme';
 import { ThemeProvider } from 'styled-components';
+import { GlobalStyle } from './globalStyle';
 
 export const App = () => {
-    return <Home />;
+    return (
+        <>
+            <GlobalStyle />
+            <Home />
+        </>
+    );
 };
 
 render(
