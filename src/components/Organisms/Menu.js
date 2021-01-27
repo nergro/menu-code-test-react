@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import menuData from '../../../menu-data.json';
 import { MenuSection } from '../Molecules/MenuSection';
-import {
-    useDispatch as useGuestsDispatch,
-    useState as useGuestsState,
-} from '../../store/guestsStore/hooks';
+import { useState as useGuestsState } from '../../store/guestsStore/hooks';
 import { NavigationButtons } from '../Molecules/NavigationButtons';
+import { useDispatch as useStepsDispatch } from '../../store/stepsStore/hooks';
 
 const Container = styled.div`
     display: flex;
@@ -42,6 +40,7 @@ const GuestButton = styled.button`
 export const Menu = () => {
     const guestsState = useGuestsState();
     const [activeGuest, setActiveGuest] = useState(guestsState[0]);
+    const stepsDispatch = useStepsDispatch();
 
     useEffect(() => {
         setActiveGuest(guestsState[0]);
@@ -66,7 +65,7 @@ export const Menu = () => {
             {Object.keys(menuData).map((key) => (
                 <MenuSection key={key} dishes={menuData[key]} title={key} guest={activeGuest} />
             ))}
-            <NavigationButtons />
+            <NavigationButtons onPrevious={() => stepsDispatch({ type: 'Step/Previous' })} />
         </Container>
     );
 };

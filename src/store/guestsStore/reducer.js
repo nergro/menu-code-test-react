@@ -12,7 +12,8 @@ export const reducer = (state, action) => {
                     },
                 ];
             }, []);
-            return [...state, ...guests];
+
+            return guests;
         }
         case 'Guests/Guest/AddDish': {
             const { guestId, dish } = action.payload;

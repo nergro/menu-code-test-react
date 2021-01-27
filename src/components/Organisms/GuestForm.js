@@ -19,8 +19,7 @@ const StyledInput = styled(Input)`
     margin-bottom: 8px;
 `;
 
-export const GuestForm = () => {
-    const [guests, setGuests] = useState({});
+export const GuestForm = ({ guests, onGuestChange }) => {
     const guestsDispatch = useGuestsDispatch();
     const stepsDispatch = useStepsDispatch();
 
@@ -28,13 +27,6 @@ export const GuestForm = () => {
         const guestsPayload = Object.keys(guests).map((key) => guests[key]);
         guestsDispatch({ type: 'Guests/AddGuests', payload: guestsPayload });
         stepsDispatch({ type: 'Step/Next' });
-    };
-
-    const onGuestChange = (guest, value) => {
-        setGuests({
-            ...guests,
-            [guest]: { id: guest + value, name: value },
-        });
     };
 
     return (
@@ -45,11 +37,13 @@ export const GuestForm = () => {
                     type="text"
                     placeholder="Guest 1"
                     onChange={(e) => onGuestChange('firstGuest', e.target.value)}
+                    value={guests['firstGuest']?.name}
                 />
                 <StyledInput
                     type="text"
                     placeholder="Guest 2"
                     onChange={(e) => onGuestChange('secondGuest', e.target.value)}
+                    value={guests['secondGuest']?.name}
                 />
             </Form>
             <NavigationButtons onNext={onNext} />
