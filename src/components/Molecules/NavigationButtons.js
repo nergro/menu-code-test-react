@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Button } from '../Atoms/Button';
+import { P } from '../Atoms/text/P';
 
 const Buttons = styled.div`
     margin: 30px 0;
@@ -22,15 +23,21 @@ const NextButton = styled(Button)`
         opacity: 0.8;
     }
 `;
-export const NavigationButtons = ({ onNext, onPrevious }) => {
+
+const StyledP = styled(P)`
+    margin-bottom: 15px;
+`;
+
+export const NavigationButtons = ({ onNext, onPrevious, error }) => {
     return (
-        <Buttons>
-            <BackButton onClick={onPrevious} disabled={!onPrevious}>
-                Back
-            </BackButton>
-            <NextButton onClick={onNext} disabled={!onNext}>
-                Next
-            </NextButton>
-        </Buttons>
+        <>
+            {error && <StyledP color="error">{error}</StyledP>}
+            <Buttons>
+                <BackButton onClick={onPrevious} disabled={!onPrevious}>
+                    Back
+                </BackButton>
+                <NextButton onClick={onNext}>Next</NextButton>
+            </Buttons>
+        </>
     );
 };

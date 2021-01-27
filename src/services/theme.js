@@ -9,6 +9,7 @@ export const theme = {
         },
         text: {
             main: '#000000',
+            error: '#C70E0E',
         },
         input: {
             border: '#F2F2F2',

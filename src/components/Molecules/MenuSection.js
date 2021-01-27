@@ -28,36 +28,39 @@ const StyledDish = styled(Dish)`
     margin: 10px 10px 0 0;
 `;
 
-export const MenuSection = ({ className, title, dishes, guest }) => {
-    const guestsState = useGuestsState();
+export const MenuSection = ({ className, type, dishes, onError }) => {
     const guestsDispatch = useGuestsDispatch();
-    console.log(guest);
+    const guestsState = useGuestsState();
+    const activeGuest = guestsState.guests[guestsState.activeGuest];
+
+    const onDishClick = (dish) => {
+        const hasAnySameTypeDishesSelected = Object.keys(activeGuest.dishes).some(
+            (key) => activeGuest.dishes[key].type === type
+        );
+        if (hasAnySameTypeDishesSelected) {
+            return onError('You cannot have more than one dish of the same course');
+        }
+        guestsDispatch({
+            type: 'Guests/Guest/UpdateDish',
+            payload: { guestId: activeGuest.id, dish: { ...dish, type } },
+        });
+    };
+
     return (
         <Container className={className}>
-            <StyledP size="medium">{title.charAt(0).toUpperCase() + title.slice(1)}</StyledP>
+            <StyledP size="medium">{type.charAt(0).toUpperCase() + type.slice(1)}</StyledP>
             <Dishes>
-                {dishes.map((dish) => {
-                    // console.log(dish.id);
-                    // const dishActive = guest.dishes.findIndex((x) => x.id === dish.id);
-                    // console.log(guest.dishes);
-                    // console.log(dishActive);
-                    return (
-                        <StyledDish
-                            key={dish.id}
-                            name={dish.name}
-                            price={dish.price}
-                            onClick={() =>
-                                guestsDispatch({
-                                    type: 'Guests/Guest/AddDish',
-                                    payload: { guestId: guest.id, dish },
-                                })
-                            }
-                            isActive={guest.dishes.findIndex((x) => x.id === dish.id) > -1}
-                        >
-                            {dish.name}
-                        </StyledDish>
-                    );
-                })}
+                {dishes.map((dish) => (
+                    <StyledDish
+                        key={dish.id}
+                        name={dish.name}
+                        price={dish.price}
+                        onClick={() => onDishClick(dish)}
+                        isActive={!!activeGuest.dishes[dish.id]}
+                    >
+                        {dish.name}
+                    </StyledDish>
+                ))}
             </Dishes>
         </Container>
     );

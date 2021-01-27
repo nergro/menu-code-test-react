@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import menuData from '../../../menu-data.json';
 import { MenuSection } from '../Molecules/MenuSection';
-import { useState as useGuestsState } from '../../store/guestsStore/hooks';
+import {
+    useState as useGuestsState,
+    useDispatch as useGuestsDispatch,
+} from '../../store/guestsStore/hooks';
 import { NavigationButtons } from '../Molecules/NavigationButtons';
 import { useDispatch as useStepsDispatch } from '../../store/stepsStore/hooks';
 
@@ -37,35 +40,65 @@ const GuestButton = styled.button`
     }
 `;
 
+const errorMessage = 'You must have at least two courses, one of which must be a main.';
+
 export const Menu = () => {
+    const [error, setError] = useState('');
     const guestsState = useGuestsState();
-    const [activeGuest, setActiveGuest] = useState(guestsState[0]);
     const stepsDispatch = useStepsDispatch();
+    const guestsDispatch = useGuestsDispatch();
 
-    useEffect(() => {
-        setActiveGuest(guestsState[0]);
-    }, [guestsState]);
+    const orderedGuests = guestsState.order.map((id) => guestsState.guests[id]);
 
-    // console.log(guestsState);
-    // console.log(activeGuest);
+    const onNextGuest = (guestId) => {
+        const activeGuest = guestsState.guests[guestsState.activeGuest];
+        const dishesArr = Object.keys(activeGuest.dishes).map((key) => activeGuest.dishes[key]);
+
+        if (dishesArr.length >= 2 && dishesArr.some((x) => x.type === 'mains')) {
+            guestsDispatch({
+                type: 'Guests/SetActiveGuest',
+                payload: { guestId },
+            });
+            setError('');
+        } else {
+            setError(errorMessage);
+        }
+    };
+
+    const onPreviousGuest = () =>
+        guestsState.activeGuest === 1
+            ? stepsDispatch({ type: 'Step/Previous' })
+            : guestsDispatch({
+                  type: 'Guests/SetActiveGuest',
+                  payload: { guestId: guestsState.activeGuest - 1 },
+              });
 
     return (
         <Container>
             <Guests>
-                {guestsState.map((guest) => (
+                {orderedGuests.map((guest) => (
                     <GuestButton
                         key={guest.id}
-                        isActive={guest.id === activeGuest.id}
-                        onClick={() => setActiveGuest(guest)}
+                        isActive={guest.id === guestsState.activeGuest}
+                        onClick={() => onNextGuest(guest.id)}
                     >
                         {guest.name}
                     </GuestButton>
                 ))}
             </Guests>
             {Object.keys(menuData).map((key) => (
-                <MenuSection key={key} dishes={menuData[key]} title={key} guest={activeGuest} />
+                <MenuSection
+                    key={key}
+                    dishes={menuData[key]}
+                    type={key}
+                    onError={(err) => setError(err)}
+                />
             ))}
-            <NavigationButtons onPrevious={() => stepsDispatch({ type: 'Step/Previous' })} />
+            <NavigationButtons
+                onPrevious={onPreviousGuest}
+                error={error}
+                onNext={() => onNextGuest(guestsState.activeGuest + 1)}
+            />
         </Container>
     );
 };

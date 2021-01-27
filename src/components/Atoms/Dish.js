@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Span } from './text/Span';
 
 const Button = styled.button`
-    border: 1px solid
+    border: 2px solid
         ${(props) =>
             props.isActive
                 ? props.theme.colors.button.active.border

@@ -1,38 +1,58 @@
 export const reducer = (state, action) => {
     switch (action.type) {
-        case 'Guests/AddGuests': {
-            const guests = action.payload.reduce((acc, guest) => {
-                return [
-                    ...acc,
-                    {
-                        id: guest.id,
-                        name: guest.name,
-                        dishes: [],
-                        totalSum: 0,
-                    },
-                ];
-            }, []);
+        case 'Guests/SetActiveGuest': {
+            const { guestId } = action.payload;
 
-            return guests;
+            return {
+                ...state,
+                activeGuest: guestId,
+            };
         }
-        case 'Guests/Guest/AddDish': {
-            const { guestId, dish } = action.payload;
+        case 'Guests/Guest/UpdateName': {
+            const { guestId, name } = action.payload;
 
-            const guestIndex = state.findIndex((guest) => guest.id === guestId);
+            const guestToUpdate = state.guests[guestId];
 
-            const updatedGuests = [...state];
-
-            if (guestIndex < 0) {
+            if (!guestToUpdate) {
                 return state;
             }
 
-            updatedGuests[guestIndex] = {
-                ...state[guestIndex],
-                dishes: [...state[guestIndex].dishes, dish],
-                totalSum: state[guestIndex].totalSum + dish.price,
-            };
+            guestToUpdate.name = name;
 
-            return updatedGuests;
+            return {
+                ...state,
+                guests: {
+                    ...state.guests,
+                    [guestId]: guestToUpdate,
+                },
+            };
+        }
+        case 'Guests/Guest/UpdateDish': {
+            const { guestId, dish } = action.payload;
+
+            const guestToUpdate = state.guests[guestId];
+
+            if (!guestToUpdate) {
+                return state;
+            }
+
+            const updatedDishes = { ...guestToUpdate.dishes };
+
+            if (updatedDishes[dish.id]) {
+                delete updatedDishes[dish.id];
+            } else {
+                updatedDishes[dish.id] = dish;
+            }
+
+            guestToUpdate.dishes = updatedDishes;
+
+            return {
+                ...state,
+                guests: {
+                    ...state.guests,
+                    [guestId]: guestToUpdate,
+                },
+            };
         }
 
         default: {
