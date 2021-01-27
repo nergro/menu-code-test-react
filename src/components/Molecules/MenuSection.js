@@ -28,21 +28,18 @@ const StyledDish = styled(Dish)`
     margin: 10px 10px 0 0;
 `;
 
-export const MenuSection = ({ className, type, dishes, onError }) => {
+export const MenuSection = ({ className, type, dishes }) => {
     const guestsDispatch = useGuestsDispatch();
     const guestsState = useGuestsState();
     const activeGuest = guestsState.guests[guestsState.activeGuest];
 
     const onDishClick = (dish) => {
-        const hasAnySameTypeDishesSelected = Object.keys(activeGuest.dishes).some(
-            (key) => activeGuest.dishes[key].type === type
-        );
-        if (hasAnySameTypeDishesSelected) {
-            return onError('You cannot have more than one dish of the same course');
-        }
         guestsDispatch({
             type: 'Guests/Guest/UpdateDish',
-            payload: { guestId: activeGuest.id, dish: { ...dish, type } },
+            payload: {
+                guestId: activeGuest.id,
+                dish: { ...dish, type },
+            },
         });
     };
 

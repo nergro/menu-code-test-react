@@ -11,12 +11,14 @@ export const initialState = {
             name: '',
             dishes: {},
             totalSum: 0,
+            error: '',
         },
         2: {
             id: 2,
             name: '',
             dishes: {},
             totalSum: 0,
+            error: '',
         },
     },
 };

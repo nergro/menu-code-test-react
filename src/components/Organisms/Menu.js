@@ -49,9 +49,9 @@ export const Menu = () => {
     const guestsDispatch = useGuestsDispatch();
 
     const orderedGuests = guestsState.order.map((id) => guestsState.guests[id]);
+    const activeGuest = guestsState.guests[guestsState.activeGuest];
 
     const onNextGuest = (guestId) => {
-        const activeGuest = guestsState.guests[guestsState.activeGuest];
         const dishesArr = Object.keys(activeGuest.dishes).map((key) => activeGuest.dishes[key]);
 
         if (dishesArr.length >= 2 && dishesArr.some((x) => x.type === 'mains')) {
@@ -87,16 +87,11 @@ export const Menu = () => {
                 ))}
             </Guests>
             {Object.keys(menuData).map((key) => (
-                <MenuSection
-                    key={key}
-                    dishes={menuData[key]}
-                    type={key}
-                    onError={(err) => setError(err)}
-                />
+                <MenuSection key={key} dishes={menuData[key]} type={key} />
             ))}
             <NavigationButtons
                 onPrevious={onPreviousGuest}
-                error={error}
+                error={error || activeGuest.error}
                 onNext={() => onNextGuest(guestsState.activeGuest + 1)}
             />
         </Container>
