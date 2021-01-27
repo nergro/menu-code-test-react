@@ -28,6 +28,9 @@ export const theme = {
                 backgroundColor: secondaryAccent,
                 textColor: '#FFFFFF',
             },
+            active: {
+                border: '#51CF66',
+            },
         },
     },
     fontFamily: {

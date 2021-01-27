@@ -3,13 +3,19 @@ import styled from 'styled-components';
 import { Span } from './text/Span';
 
 const Button = styled.button`
-    border: 1px solid ${(props) => props.theme.colors.button.default.border};
+    border: 1px solid
+        ${(props) =>
+            props.isActive
+                ? props.theme.colors.button.active.border
+                : props.theme.colors.button.default.border};
+
     width: 160px;
     background: transparent;
     border-radius: 5px;
     transition: all 0.3s ease;
     cursor: pointer;
-    &:hover {
+    &:hover,
+    &:focus {
         box-shadow: rgb(0 0 0 / 25%) 0px 0px 8px 1px;
     }
     font: ${(props) => props.theme.fonts.normalText};
@@ -17,6 +23,7 @@ const Button = styled.button`
     flex-direction: column;
     align-items: center;
     padding: 7px;
+    outline: none;
 
     ${Span} {
         &:first-child {

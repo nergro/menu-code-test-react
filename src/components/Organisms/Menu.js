@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import menuData from '../../../menu-data.json';
 import { MenuSection } from '../Molecules/MenuSection';
@@ -43,6 +43,13 @@ export const Menu = () => {
     const guestsState = useGuestsState();
     const [activeGuest, setActiveGuest] = useState(guestsState[0]);
 
+    useEffect(() => {
+        setActiveGuest(guestsState[0]);
+    }, [guestsState]);
+
+    // console.log(guestsState);
+    // console.log(activeGuest);
+
     return (
         <Container>
             <Guests>
@@ -57,7 +64,7 @@ export const Menu = () => {
                 ))}
             </Guests>
             {Object.keys(menuData).map((key) => (
-                <MenuSection key={key} dishes={menuData[key]} title={key} />
+                <MenuSection key={key} dishes={menuData[key]} title={key} guest={activeGuest} />
             ))}
             <NavigationButtons />
         </Container>

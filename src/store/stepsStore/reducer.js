@@ -3,7 +3,6 @@ import { steps } from './provider';
 export const reducer = (state, action) => {
     switch (action.type) {
         case 'Step/Next': {
-            console.log('INNEXT');
             const currentIndex = steps.findIndex((x) => x === state);
             if (currentIndex < 0) {
                 return state;
