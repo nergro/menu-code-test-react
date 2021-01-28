@@ -98,8 +98,10 @@ export const reducer = (state: State, action: Action): State => {
 
             if (updatedDishes[dish.id]) {
                 delete updatedDishes[dish.id];
+                guestToUpdate.totalSum -= dish.price;
             } else {
                 updatedDishes[dish.id] = { ...dish };
+                guestToUpdate.totalSum += dish.price;
             }
 
             return {

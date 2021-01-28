@@ -8,8 +8,9 @@ import {
 } from '../../store/guestsStore/hooks';
 import { NavigationButtons } from '../Molecules/NavigationButtons';
 import { useDispatch as useStepsDispatch } from '../../store/stepsStore/hooks';
-import {getArray} from '../../services/getArray'
-import {MenuData} from '../../types/dish'
+import { getArray } from '../../services/getArray';
+import { MenuData } from '../../types/dish';
+import { TotalGuestsOrderPrice } from '../Molecules/TotalGuestsOrderPrice';
 
 const Container = styled.div`
     display: flex;
@@ -25,6 +26,7 @@ const Guests = styled.div`
 interface GuestButtonProps {
     isActive?: boolean;
 }
+
 const GuestButton = styled.button<GuestButtonProps>`
     border: none;
     background: none;
@@ -47,9 +49,8 @@ const GuestButton = styled.button<GuestButtonProps>`
 
 const errorMessage = 'You must have at least two courses, one of which must be a main.';
 
-
-export const Menu:FC = () => {
-    const menuData:MenuData = Object.assign(new MenuData(), menuDataJSON);
+export const Menu: FC = () => {
+    const menuData: MenuData = Object.assign(new MenuData(), menuDataJSON);
 
     const [error, setError] = useState('');
     const guestsState = useGuestsState();
@@ -59,29 +60,31 @@ export const Menu:FC = () => {
     const orderedGuests = guestsState.order.map((id) => guestsState.guests[id]);
     const activeGuest = guestsState.guests[guestsState.activeGuest];
 
-    const onNextGuest = (guestId:number):void => {
+    const onNextGuest = (guestId: number): void => {
         const dishesArr = getArray(activeGuest.dishes);
 
         if (dishesArr.length >= 2 && dishesArr.some((x) => x.type === 'mains')) {
-            guestsDispatch({
-                type: 'Guests/SetActiveGuest',
-                payload: { guestId },
-            });
+            if (guestsState.activeGuest === guestsState.order.length) {
+                stepsDispatch({ type: 'Step/Next' });
+            } else {
+                guestsDispatch({
+                    type: 'Guests/SetActiveGuest',
+                    payload: { guestId },
+                });
+            }
             setError('');
         } else {
             setError(errorMessage);
         }
     };
 
-    const onPreviousGuest = ():void =>
+    const onPreviousGuest = (): void =>
         guestsState.activeGuest === 1
             ? stepsDispatch({ type: 'Step/Previous' })
             : guestsDispatch({
                   type: 'Guests/SetActiveGuest',
                   payload: { guestId: guestsState.activeGuest - 1 },
               });
-
-              
 
     return (
         <Container>
@@ -99,6 +102,7 @@ export const Menu:FC = () => {
             {Object.keys(menuData).map((key) => (
                 <MenuSection key={key} dishes={menuData[key]} type={key} />
             ))}
+            <TotalGuestsOrderPrice />
             <NavigationButtons
                 onPrevious={onPreviousGuest}
                 error={error || activeGuest.error}

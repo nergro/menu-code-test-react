@@ -21,6 +21,9 @@ export const theme: DefaultTheme = {
             placeholder: '#606060',
             error: '#FF0000',
         },
+        border: {
+            light: '#AAAAAA',
+        },
         button: {
             default: {
                 textColor: '#FFFFFF',

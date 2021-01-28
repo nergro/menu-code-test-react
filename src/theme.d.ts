@@ -19,6 +19,9 @@ declare module 'styled-components' {
                 placeholder: string;
                 error: string;
             };
+            border: {
+                light: string;
+            };
             button: {
                 default: {
                     textColor: string;

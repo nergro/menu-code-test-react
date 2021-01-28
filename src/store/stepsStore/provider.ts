@@ -2,11 +2,11 @@ import { storeFactory } from '../storeFactory';
 
 import { reducer } from './reducer';
 import { Action as GenericAction } from '../types';
-import { steps } from '../../types/steps';
+import { steps, Step } from '../../types/steps';
 
 export type Action = GenericAction<'Step/Next'> | GenericAction<'Step/Previous'>;
 
-export type State = string;
+export type State = Step;
 
 export const initialState = steps[0];
 

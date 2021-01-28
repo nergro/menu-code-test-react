@@ -1,7 +1,8 @@
-import React,{FC} from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import { Button } from '../Atoms/Button';
 import { P } from '../Atoms/text/P';
+import { useDispatch as useStepsDispatch } from '../../store/stepsStore/hooks';
 
 const Buttons = styled.div`
     margin: 30px 0;
@@ -29,20 +30,23 @@ const StyledP = styled(P)`
 `;
 
 interface Props {
-onNext: () => void;
-onPrevious?: () => void;
-error?: string;
+    onNext?: () => void;
+    onPrevious?: () => void;
+    error?: string;
+    nextLabel?: string;
 }
 
-export const NavigationButtons:FC<Props> = ({ onNext, onPrevious, error }) => {
+export const NavigationButtons: FC<Props> = ({ onNext, onPrevious, error, nextLabel = 'Next' }) => {
+    const stepsDispatch = useStepsDispatch();
+
+    const goToNextStep = (): void => stepsDispatch({ type: 'Step/Next' });
+
     return (
         <>
             {error && <StyledP color="error">{error}</StyledP>}
             <Buttons>
-                <BackButton onClick={onPrevious} disabled={!onPrevious}>
-                    Back
-                </BackButton>
-                <NextButton onClick={onNext}>Next</NextButton>
+                {onPrevious && <BackButton onClick={onPrevious}>Back</BackButton>}
+                <NextButton onClick={onNext || goToNextStep}>{nextLabel}</NextButton>
             </Buttons>
         </>
     );
