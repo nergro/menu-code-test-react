@@ -45,7 +45,7 @@ export const GuestForm: FC = () => {
         guestsDispatch({ type: 'Guests/Guest/UpdateName', payload: { guestId, name } });
 
     return (
-        <div>
+        <>
             <P>Welcome! Please enter your names</P>
             <Form>
                 <StyledInput
@@ -62,6 +62,6 @@ export const GuestForm: FC = () => {
                 />
             </Form>
             <NavigationButtons onNext={onNext} error={error} previousDisabled />
-        </div>
+        </>
     );
 };

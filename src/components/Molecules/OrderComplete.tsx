@@ -17,6 +17,7 @@ export const OrderComplete: FC = () => {
                     guestsDispatch({ type: 'Guests/Reset' });
                     stepsDispatch({ type: 'Step/Reset' });
                 }}
+                previousDisabled
             />
         </>
     );

@@ -18,7 +18,7 @@ export interface Props {
 }
 
 export const Span = styled.span<Props>`
-    color: ${(props) => props.theme.colors.text[props.color || 'main']};
+    color: ${(props) => props.theme.colors.text[props.color || 'primary']};
     font-family: ${(props) => props.theme.fontFamily[props.font || 'Main']};
     font-weight: ${(props) => props.weight || '400'};
     font-size: ${(props) => sizes[props.size || 'normal'].desktop};

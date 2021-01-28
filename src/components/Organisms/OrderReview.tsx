@@ -9,7 +9,8 @@ import { TotalGuestsOrderPrice } from '../Molecules/TotalGuestsOrderPrice';
 const OrderContainer = styled.div`
     display: flex;
     justify-content: center;
-    margin-top: 50px;
+    flex-wrap: wrap;
+    margin-top: 30px;
 `;
 
 const GuestLabel = styled(P)`
@@ -23,20 +24,13 @@ const OrderList = styled.div`
     width: 270px;
     height: 270px;
     padding: 20px;
-
-    &:not(:first-child) {
-        margin-left: 20px;
-    }
+    margin: 20px 20px 0 20px;
 `;
 
 const Dishes = styled.div`
     flex-grow: 1;
     margin-top: 20px;
 `;
-
-const DishLabel = styled(P)``;
-
-const TotalLabel = styled(P)``;
 
 export const OrderReview: FC = () => {
     const guestsState = useGuestsState();
@@ -55,14 +49,14 @@ export const OrderReview: FC = () => {
                             <GuestLabel>{guest.name}</GuestLabel>
                             <Dishes>
                                 {getArray(guest.dishes).map((dish) => (
-                                    <DishLabel key={dish.id}>
+                                    <P key={dish.id}>
                                         <strong>{dish.name}</strong> - {dish.price}€
-                                    </DishLabel>
+                                    </P>
                                 ))}
                             </Dishes>
-                            <TotalLabel>
+                            <P>
                                 <strong>Sum:</strong> {guest.totalSum}€
-                            </TotalLabel>
+                            </P>
                         </OrderList>
                     );
                 })}
