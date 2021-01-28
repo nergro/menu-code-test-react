@@ -1,4 +1,4 @@
-import React, { FC,ComponentPropsWithoutRef } from 'react';
+import React, { FC, ComponentPropsWithoutRef } from 'react';
 import styled from 'styled-components';
 import { Span } from './text/Span';
 
@@ -7,14 +7,12 @@ interface ButtonProps {
 }
 
 const Button = styled.button<ButtonProps>`
+    background: ${(props) =>
+        props.isActive ? props.theme.colors.button.active.background : 'transparent'};
     border: 2px solid
-        ${(props) =>
-            props.isActive
-                ? props.theme.colors.button.active.border
-                : props.theme.colors.button.default.border};
+        ${(props) => props.theme.colors.button[props.isActive ? 'active' : 'default'].border};
 
     width: 160px;
-    background: transparent;
     border-radius: 5px;
     transition: all 0.3s ease;
     cursor: pointer;
@@ -30,6 +28,7 @@ const Button = styled.button<ButtonProps>`
     outline: none;
 
     ${Span} {
+        color: ${(props) => props.theme.colors.text[props.isActive ? 'secondary' : 'primary']};
         &:first-child {
             font-weight: 500;
         }
@@ -53,9 +52,9 @@ interface Props extends ComponentPropsWithoutRef<'button'> {
     name: string;
     price: number;
     isActive?: boolean;
-  } 
+}
 
-export const Dish:FC<Props> = ({ className, name, price, ...rest }) => {
+export const Dish: FC<Props> = ({ className, name, price, ...rest }) => {
     return (
         <Button className={className} {...rest}>
             <Span>{name}</Span>

@@ -4,7 +4,10 @@ import { reducer } from './reducer';
 import { Action as GenericAction } from '../types';
 import { steps, Step } from '../../types/steps';
 
-export type Action = GenericAction<'Step/Next'> | GenericAction<'Step/Previous'>;
+export type Action =
+    | GenericAction<'Step/Next'>
+    | GenericAction<'Step/Previous'>
+    | GenericAction<'Step/Reset'>;
 
 export type State = Step;
 

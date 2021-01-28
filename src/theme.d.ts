@@ -8,7 +8,8 @@ declare module 'styled-components' {
                 secondary: string;
             };
             text: {
-                main: string;
+                primary: string;
+                secondary: string;
                 error: string;
             };
             input: {
@@ -33,6 +34,7 @@ declare module 'styled-components' {
                     textColor: string;
                 };
                 active: {
+                    background: string;
                     border: string;
                 };
             };

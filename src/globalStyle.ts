@@ -12,7 +12,7 @@ export const GlobalStyle = createGlobalStyle`
 
   body {
     margin: 0;
-    color: ${(props) => props.theme.colors.text.main};
+    color: ${(props) => props.theme.colors.text.primary};
   }
 
   html, body, #root {

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import menuDataJSON from '../../../menu-data.json';
 import { MenuSection } from '../Molecules/MenuSection';
@@ -8,9 +8,9 @@ import {
 } from '../../store/guestsStore/hooks';
 import { NavigationButtons } from '../Molecules/NavigationButtons';
 import { useDispatch as useStepsDispatch } from '../../store/stepsStore/hooks';
-import { getArray } from '../../services/getArray';
 import { MenuData } from '../../types/dish';
 import { TotalGuestsOrderPrice } from '../Molecules/TotalGuestsOrderPrice';
+import { orderIncludesEnoughDishes } from '../../services/menuRestrictions';
 
 const Container = styled.div`
     display: flex;
@@ -47,12 +47,9 @@ const GuestButton = styled.button<GuestButtonProps>`
     }
 `;
 
-const errorMessage = 'You must have at least two courses, one of which must be a main.';
-
 export const Menu: FC = () => {
     const menuData: MenuData = Object.assign(new MenuData(), menuDataJSON);
 
-    const [error, setError] = useState('');
     const guestsState = useGuestsState();
     const stepsDispatch = useStepsDispatch();
     const guestsDispatch = useGuestsDispatch();
@@ -60,31 +57,31 @@ export const Menu: FC = () => {
     const orderedGuests = guestsState.order.map((id) => guestsState.guests[id]);
     const activeGuest = guestsState.guests[guestsState.activeGuest];
 
-    const onNextGuest = (guestId: number): void => {
-        const dishesArr = getArray(activeGuest.dishes);
-
-        if (dishesArr.length >= 2 && dishesArr.some((x) => x.type === 'mains')) {
-            if (guestsState.activeGuest === guestsState.order.length) {
-                stepsDispatch({ type: 'Step/Next' });
-            } else {
-                guestsDispatch({
-                    type: 'Guests/SetActiveGuest',
-                    payload: { guestId },
-                });
-            }
-            setError('');
-        } else {
-            setError(errorMessage);
-        }
-    };
-
-    const onPreviousGuest = (): void =>
-        guestsState.activeGuest === 1
-            ? stepsDispatch({ type: 'Step/Previous' })
+    const moveForward = (guestId: number): void =>
+        guestsState.activeGuest === guestsState.order.length
+            ? stepsDispatch({ type: 'Step/Next' })
             : guestsDispatch({
                   type: 'Guests/SetActiveGuest',
-                  payload: { guestId: guestsState.activeGuest - 1 },
+                  payload: { guestId },
               });
+
+    const onNextGuest = (guestId: number): void => {
+        if (orderIncludesEnoughDishes(activeGuest.dishes)) {
+            moveForward(guestId);
+            guestsDispatch({
+                type: 'Guests/Guest/SetError',
+                payload: { guestId: guestsState.activeGuest, error: '' },
+            });
+        } else {
+            guestsDispatch({
+                type: 'Guests/Guest/SetError',
+                payload: {
+                    guestId: guestsState.activeGuest,
+                    error: 'You must have at least two courses, one of which must be a main.',
+                },
+            });
+        }
+    };
 
     return (
         <Container>
@@ -104,8 +101,7 @@ export const Menu: FC = () => {
             ))}
             <TotalGuestsOrderPrice />
             <NavigationButtons
-                onPrevious={onPreviousGuest}
-                error={error || activeGuest.error}
+                error={activeGuest.error}
                 onNext={() => onNextGuest(guestsState.activeGuest + 1)}
             />
         </Container>

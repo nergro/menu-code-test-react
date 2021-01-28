@@ -8,6 +8,7 @@ import {
     useState as useGuestsState,
 } from '../../store/guestsStore/hooks';
 import { useDispatch as useStepsDispatch } from '../../store/stepsStore/hooks';
+import { getArray } from '../../services/getArray';
 
 const Form = styled.form`
     display: flex;
@@ -30,8 +31,8 @@ export const GuestForm: FC = () => {
     const stepsDispatch = useStepsDispatch();
 
     const onNext = (): void => {
-        const everyGuestHasProperName = Object.keys(guestsState.guests).every(
-            (key) => guestsState.guests[+key].name.length > 2
+        const everyGuestHasProperName = getArray(guestsState.guests).every(
+            (guest) => guest.name.length > 2
         );
         if (everyGuestHasProperName) {
             stepsDispatch({ type: 'Step/Next' });
@@ -60,7 +61,7 @@ export const GuestForm: FC = () => {
                     value={guestsState.guests[2].name}
                 />
             </Form>
-            <NavigationButtons onNext={onNext} error={error} />
+            <NavigationButtons onNext={onNext} error={error} previousDisabled />
         </div>
     );
 };

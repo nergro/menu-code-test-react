@@ -1,5 +1,5 @@
 import { storeFactory } from '../storeFactory';
-import { ActionWithPayload } from '../types';
+import { Action as GenericAction, ActionWithPayload } from '../types';
 import { Dish } from '../../types/dish';
 import { Guests } from '../../types/guest';
 import { reducer } from './reducer';
@@ -7,7 +7,9 @@ import { reducer } from './reducer';
 export type Action =
     | ActionWithPayload<'Guests/SetActiveGuest', { guestId: number }>
     | ActionWithPayload<'Guests/Guest/UpdateName', { guestId: number; name: string }>
-    | ActionWithPayload<'Guests/Guest/UpdateDish', { guestId: number; dish: Dish }>;
+    | ActionWithPayload<'Guests/Guest/UpdateDish', { guestId: number; dish: Dish }>
+    | ActionWithPayload<'Guests/Guest/SetError', { guestId: number; error: string }>
+    | GenericAction<'Guests/Reset'>;
 
 export type State = {
     activeGuest: number;

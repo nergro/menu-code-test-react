@@ -15,6 +15,9 @@ interface Props {
 
 export const TotalGuestsOrderPrice: FC<Props> = ({ className }) => {
     const guestsState = useGuestsState();
+    console.log(guestsState);
+
+    console.log(getTotalGuestSum(guestsState.guests));
     return (
         <P className={className}>
             <strong>Total price:</strong> {getTotalGuestSum(guestsState.guests)}€

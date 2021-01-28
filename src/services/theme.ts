@@ -10,7 +10,8 @@ export const theme: DefaultTheme = {
             secondary: secondaryAccent,
         },
         text: {
-            main: '#000000',
+            primary: '#000000',
+            secondary: '#FFFFFF',
             error: '#C70E0E',
         },
         input: {
@@ -35,6 +36,7 @@ export const theme: DefaultTheme = {
                 textColor: '#FFFFFF',
             },
             active: {
+                background: '#51CF66',
                 border: '#51CF66',
             },
         },

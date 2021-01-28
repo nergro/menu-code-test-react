@@ -1,42 +1,22 @@
 import { Dish, Dishes } from '../../types/dish';
 import { Guests } from '../../types/guest';
-import { Action, State } from './provider';
-import { getArray } from '../../services/getArray';
-
-const hasSameCourseDish = (dishToAdd: Dish, dishes: Dishes): boolean =>
-    getArray(dishes).some((dish) => dish.id !== dishToAdd.id && dish.type === dishToAdd.type);
-
-const getUsedDishCount = (guests: Guests, dishName: string): number =>
-    getArray(guests).reduce((count, guest) => {
-        const dishUsedCount = getArray(guest.dishes).filter((x) => x.name === dishName).length;
-        return count + dishUsedCount;
-    }, 0);
-
-const forbiddenMealCombinations = [['Prawn cocktail', 'Salmon fillet']];
-
-const isDishUsed = (dishes: Dishes, dishName: string): boolean =>
-    getArray(dishes).some((x) => x.name === dishName);
-
-const isDishAvailable = (dishes: Dishes, dishName: string): boolean => {
-    const possibleForbiddenCombinations = forbiddenMealCombinations.filter((x) =>
-        x.includes(dishName)
-    );
-
-    return possibleForbiddenCombinations.every((comb) =>
-        comb.filter((x) => x !== dishName).every((x) => !isDishUsed(dishes, x))
-    );
-};
+import { Action, State, initialState } from './provider';
+import {
+    dishCombinationInvalid,
+    hasSameCourseDish,
+    dishOutOfStock,
+} from '../../services/menuRestrictions';
 
 const getDishUpdateError = (dishToAdd: Dish, guestDishes: Dishes, guests: Guests): string => {
     if (hasSameCourseDish(dishToAdd, guestDishes)) {
         return 'You cannot have more than one dish of the same course';
     }
 
-    if (dishToAdd.name === 'Cheesecake' && getUsedDishCount(guests, 'Cheesecake') > 0) {
+    if (dishOutOfStock(dishToAdd.name, guestDishes, guests)) {
         return `${dishToAdd.name} is out of stock`;
     }
 
-    if (!isDishAvailable(guestDishes, dishToAdd.name)) {
+    if (dishCombinationInvalid(guestDishes, dishToAdd.name)) {
         return 'Selected meal combination is not available';
     }
 
@@ -111,6 +91,20 @@ export const reducer = (state: State, action: Action): State => {
                     [guestId]: { ...guestToUpdate, dishes: updatedDishes },
                 },
             };
+        }
+        case 'Guests/Guest/SetError': {
+            const { guestId, error } = action.payload;
+
+            return {
+                ...state,
+                guests: {
+                    ...state.guests,
+                    [guestId]: { ...state.guests[guestId], error },
+                },
+            };
+        }
+        case 'Guests/Reset': {
+            return initialState;
         }
 
         default: {
