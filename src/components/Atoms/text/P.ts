@@ -1,6 +1,9 @@
-import styled from 'styled-components';
+import styled, { DefaultTheme } from 'styled-components';
+import { FontSizeCollection } from '../../../types/fontSizeCollection';
 
-const sizes = {
+type Size = 'normal' | 'medium';
+
+const sizes: FontSizeCollection<Size> = {
     normal: {
         desktop: '16px',
         mobile: '16px',
@@ -11,7 +14,14 @@ const sizes = {
     },
 };
 
-export const P = styled.p`
+export interface Props {
+    size?: Size;
+    color?: keyof DefaultTheme['colors']['text'];
+    weight?: '400' | '500' | '600' | '700' | '900';
+    font?: keyof DefaultTheme['fontFamily'];
+}
+
+export const P = styled.p<Props>`
     color: ${(props) => props.theme.colors.text[props.color || 'main']};
     font-family: ${(props) => props.theme.fontFamily[props.font || 'Main']};
     font-weight: ${(props) => props.weight || '400'};

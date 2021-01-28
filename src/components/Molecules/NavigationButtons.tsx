@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{FC} from 'react';
 import styled from 'styled-components';
 import { Button } from '../Atoms/Button';
 import { P } from '../Atoms/text/P';
@@ -28,7 +28,13 @@ const StyledP = styled(P)`
     margin-bottom: 15px;
 `;
 
-export const NavigationButtons = ({ onNext, onPrevious, error }) => {
+interface Props {
+onNext: () => void;
+onPrevious?: () => void;
+error?: string;
+}
+
+export const NavigationButtons:FC<Props> = ({ onNext, onPrevious, error }) => {
     return (
         <>
             {error && <StyledP color="error">{error}</StyledP>}

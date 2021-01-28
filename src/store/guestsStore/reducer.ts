@@ -1,19 +1,23 @@
-const getList = (object) => Object.keys(object).map((key) => object[key]);
+import { Dish, Dishes } from '../../types/dish';
+import { Guests } from '../../types/guest';
+import { Action, State } from './provider';
+import { getArray } from '../../services/getArray';
 
-const hasSameCourseDish = (dishToAdd, dishes) =>
-    getList(dishes).some((dish) => dish.id !== dishToAdd.id && dish.type === dishToAdd.type);
+const hasSameCourseDish = (dishToAdd: Dish, dishes: Dishes): boolean =>
+    getArray(dishes).some((dish) => dish.id !== dishToAdd.id && dish.type === dishToAdd.type);
 
-const getUsedDishCount = (guests, dishName) =>
-    getList(guests).reduce((count, guest) => {
-        const dishUsedCount = getList(guest.dishes).filter((x) => x.name === dishName).length;
+const getUsedDishCount = (guests: Guests, dishName: string): number =>
+    getArray(guests).reduce((count, guest) => {
+        const dishUsedCount = getArray(guest.dishes).filter((x) => x.name === dishName).length;
         return count + dishUsedCount;
     }, 0);
 
 const forbiddenMealCombinations = [['Prawn cocktail', 'Salmon fillet']];
 
-const isDishUsed = (dishes, dishName) => getList(dishes).some((x) => x.name === dishName);
+const isDishUsed = (dishes: Dishes, dishName: string): boolean =>
+    getArray(dishes).some((x) => x.name === dishName);
 
-const isDishAvailable = (dishName, dishes) => {
+const isDishAvailable = (dishes: Dishes, dishName: string): boolean => {
     const possibleForbiddenCombinations = forbiddenMealCombinations.filter((x) =>
         x.includes(dishName)
     );
@@ -23,23 +27,23 @@ const isDishAvailable = (dishName, dishes) => {
     );
 };
 
-const getDishUpdateError = (dish, dishes, guests) => {
-    if (hasSameCourseDish(dish, dishes)) {
+const getDishUpdateError = (dishToAdd: Dish, guestDishes: Dishes, guests: Guests): string => {
+    if (hasSameCourseDish(dishToAdd, guestDishes)) {
         return 'You cannot have more than one dish of the same course';
     }
 
-    if (dish.name === 'Cheesecake' && getUsedDishCount(guests, 'Cheesecake') > 0) {
-        return `${dish.name} is out of stock`;
+    if (dishToAdd.name === 'Cheesecake' && getUsedDishCount(guests, 'Cheesecake') > 0) {
+        return `${dishToAdd.name} is out of stock`;
     }
 
-    if (!isDishAvailable(dish.name, dishes)) {
+    if (!isDishAvailable(guestDishes, dishToAdd.name)) {
         return 'Selected meal combination is not available';
     }
 
     return '';
 };
 
-export const reducer = (state, action) => {
+export const reducer = (state: State, action: Action): State => {
     switch (action.type) {
         case 'Guests/SetActiveGuest': {
             const { guestId } = action.payload;

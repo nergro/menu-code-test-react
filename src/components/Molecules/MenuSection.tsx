@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{FC} from 'react';
 import { Dish } from '../Atoms/Dish';
 import { P } from '../Atoms/text/P';
 import styled from 'styled-components';
@@ -6,6 +6,7 @@ import {
     useDispatch as useGuestsDispatch,
     useState as useGuestsState,
 } from '../../store/guestsStore/hooks';
+import { DishDTO} from '../../types/dish';
 
 const Container = styled.div`
     margin-top: 20px;
@@ -28,12 +29,18 @@ const StyledDish = styled(Dish)`
     margin: 10px 10px 0 0;
 `;
 
-export const MenuSection = ({ className, type, dishes }) => {
+interface Props {
+    className?: string;
+    type: string;
+    dishes: DishDTO[];
+}
+
+export const MenuSection:FC<Props> = ({ className, type, dishes }) => {
     const guestsDispatch = useGuestsDispatch();
     const guestsState = useGuestsState();
     const activeGuest = guestsState.guests[guestsState.activeGuest];
 
-    const onDishClick = (dish) => {
+    const onDishClick = (dish: DishDTO):void => {
         guestsDispatch({
             type: 'Guests/Guest/UpdateDish',
             payload: {

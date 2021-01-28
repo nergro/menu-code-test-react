@@ -1,8 +1,21 @@
 import { storeFactory } from '../storeFactory';
-
+import { ActionWithPayload } from '../types';
+import { Dish } from '../../types/dish';
+import { Guests } from '../../types/guest';
 import { reducer } from './reducer';
 
-export const initialState = {
+export type Action =
+    | ActionWithPayload<'Guests/SetActiveGuest', { guestId: number }>
+    | ActionWithPayload<'Guests/Guest/UpdateName', { guestId: number; name: string }>
+    | ActionWithPayload<'Guests/Guest/UpdateDish', { guestId: number; dish: Dish }>;
+
+export type State = {
+    activeGuest: number;
+    order: number[];
+    guests: Guests;
+};
+
+export const initialState: State = {
     activeGuest: 1,
     order: [1, 2],
     guests: {

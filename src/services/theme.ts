@@ -1,7 +1,9 @@
+import { DefaultTheme } from 'styled-components';
+
 const primaryAccent = '#DA3743';
 const secondaryAccent = '#2D333F';
 
-export const theme = {
+export const theme: DefaultTheme = {
     colors: {
         accents: {
             primary: primaryAccent,

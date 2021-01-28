@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { FC, useState } from 'react';
 import styled from 'styled-components';
-import menuData from '../../../menu-data.json';
+import menuDataJSON from '../../../menu-data.json';
 import { MenuSection } from '../Molecules/MenuSection';
 import {
     useState as useGuestsState,
@@ -8,6 +8,8 @@ import {
 } from '../../store/guestsStore/hooks';
 import { NavigationButtons } from '../Molecules/NavigationButtons';
 import { useDispatch as useStepsDispatch } from '../../store/stepsStore/hooks';
+import {getArray} from '../../services/getArray'
+import {MenuData} from '../../types/dish'
 
 const Container = styled.div`
     display: flex;
@@ -20,7 +22,10 @@ const Guests = styled.div`
     justify-content: center;
 `;
 
-const GuestButton = styled.button`
+interface GuestButtonProps {
+    isActive?: boolean;
+}
+const GuestButton = styled.button<GuestButtonProps>`
     border: none;
     background: none;
     padding: 5px;
@@ -42,7 +47,10 @@ const GuestButton = styled.button`
 
 const errorMessage = 'You must have at least two courses, one of which must be a main.';
 
-export const Menu = () => {
+
+export const Menu:FC = () => {
+    const menuData:MenuData = Object.assign(new MenuData(), menuDataJSON);
+
     const [error, setError] = useState('');
     const guestsState = useGuestsState();
     const stepsDispatch = useStepsDispatch();
@@ -51,8 +59,8 @@ export const Menu = () => {
     const orderedGuests = guestsState.order.map((id) => guestsState.guests[id]);
     const activeGuest = guestsState.guests[guestsState.activeGuest];
 
-    const onNextGuest = (guestId) => {
-        const dishesArr = Object.keys(activeGuest.dishes).map((key) => activeGuest.dishes[key]);
+    const onNextGuest = (guestId:number):void => {
+        const dishesArr = getArray(activeGuest.dishes);
 
         if (dishesArr.length >= 2 && dishesArr.some((x) => x.type === 'mains')) {
             guestsDispatch({
@@ -65,13 +73,15 @@ export const Menu = () => {
         }
     };
 
-    const onPreviousGuest = () =>
+    const onPreviousGuest = ():void =>
         guestsState.activeGuest === 1
             ? stepsDispatch({ type: 'Step/Previous' })
             : guestsDispatch({
                   type: 'Guests/SetActiveGuest',
                   payload: { guestId: guestsState.activeGuest - 1 },
               });
+
+              
 
     return (
         <Container>

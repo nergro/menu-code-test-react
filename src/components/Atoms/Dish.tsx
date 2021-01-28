@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { FC,ComponentPropsWithoutRef } from 'react';
 import styled from 'styled-components';
 import { Span } from './text/Span';
 
-const Button = styled.button`
+interface ButtonProps {
+    isActive?: boolean;
+}
+
+const Button = styled.button<ButtonProps>`
     border: 2px solid
         ${(props) =>
             props.isActive
@@ -44,7 +48,14 @@ const StyledSpan = styled(Span)`
     margin-top: 5px;
 `;
 
-export const Dish = ({ className, name, price, ...rest }) => {
+interface Props extends ComponentPropsWithoutRef<'button'> {
+    className?: string;
+    name: string;
+    price: number;
+    isActive?: boolean;
+  } 
+
+export const Dish:FC<Props> = ({ className, name, price, ...rest }) => {
     return (
         <Button className={className} {...rest}>
             <Span>{name}</Span>

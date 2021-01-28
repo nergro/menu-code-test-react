@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import styled from 'styled-components';
-import { Input } from '../Atoms/input/Input';
+import { Input } from '../Atoms/Input';
 import { P } from '../Atoms/text/P';
 import { NavigationButtons } from '../Molecules/NavigationButtons';
 import {
@@ -22,16 +22,16 @@ const StyledInput = styled(Input)`
     margin-bottom: 8px;
 `;
 
-export const GuestForm = () => {
+export const GuestForm: FC = () => {
     const [error, setError] = useState('');
 
     const guestsDispatch = useGuestsDispatch();
     const guestsState = useGuestsState();
     const stepsDispatch = useStepsDispatch();
 
-    const onNext = () => {
+    const onNext = (): void => {
         const everyGuestHasProperName = Object.keys(guestsState.guests).every(
-            (key) => guestsState.guests[key].name.length > 2
+            (key) => guestsState.guests[+key].name.length > 2
         );
         if (everyGuestHasProperName) {
             stepsDispatch({ type: 'Step/Next' });
@@ -40,7 +40,7 @@ export const GuestForm = () => {
         }
     };
 
-    const onGuestChange = (guestId, name) =>
+    const onGuestChange = (guestId: number, name: string): void =>
         guestsDispatch({ type: 'Guests/Guest/UpdateName', payload: { guestId, name } });
 
     return (

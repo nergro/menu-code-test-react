@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{FC} from 'react';
 import styled from 'styled-components';
 import { H1 } from '../Atoms/text/H';
 
@@ -13,7 +13,7 @@ const Content = styled.div`
     width: 95%;
     margin: 0 auto;
 `;
-export const StepLayout = ({ children }) => {
+export const StepLayout:FC = ({ children }) => {
     return (
         <Container>
             <H1 weight="500">OT Menu</H1>

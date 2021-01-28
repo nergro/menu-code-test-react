@@ -1,6 +1,7 @@
-import { steps } from './provider';
+import { steps } from '../../types/steps';
+import { Action, State } from './provider';
 
-export const reducer = (state, action) => {
+export const reducer = (state: State, action: Action): State => {
     switch (action.type) {
         case 'Step/Next': {
             const currentIndex = steps.findIndex((x) => x === state);
@@ -20,7 +21,7 @@ export const reducer = (state, action) => {
         }
 
         default: {
-            const _ignore = action;
+            const _ignore: never = action;
             return state;
         }
     }

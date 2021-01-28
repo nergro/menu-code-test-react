@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{FC} from 'react';
 import { render } from 'react-dom';
 import { Home } from './components/Organisms/Home/Home';
 import { theme } from './services/theme';
@@ -10,7 +10,7 @@ import { GuestsStoreProvider } from './store/guestsStore/provider';
 
 const storeProviders = [StepStoreProvider, GuestsStoreProvider];
 
-export const App = () => {
+export const App:FC = () => {
     return (
         <ProvidersInjector providers={storeProviders}>
             <ThemeProvider theme={theme}>
