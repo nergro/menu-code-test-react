@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import { GuestForm } from '../GuestForm';
-import { Menu } from '../Menu';
+import { GuestForm } from '../GuestForm/GuestForm';
+import { Menu } from '../Menu/Menu';
 import { useState as useStepState } from '../../../store/stepsStore/hooks';
 import { OrderReview } from '../OrderReview';
 import { OrderComplete } from '../../Molecules/OrderComplete';

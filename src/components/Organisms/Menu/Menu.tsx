@@ -1,16 +1,16 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import menuDataJSON from '../../../menu-data.json';
-import { MenuSection } from '../Molecules/MenuSection';
+import menuDataJSON from '../../../../menu-data.json';
+import { MenuSection } from '../../Molecules/MenuSection';
 import {
     useState as useGuestsState,
     useDispatch as useGuestsDispatch,
-} from '../../store/guestsStore/hooks';
-import { NavigationButtons } from '../Molecules/NavigationButtons';
-import { useDispatch as useStepsDispatch } from '../../store/stepsStore/hooks';
-import { MenuData } from '../../types/dish';
-import { TotalGuestsOrderPrice } from '../Molecules/TotalGuestsOrderPrice';
-import { orderIncludesEnoughDishes } from '../../services/menuRestrictions';
+} from '../../../store/guestsStore/hooks';
+import { NavigationButtons } from '../../Molecules/NavigationButtons';
+import { useDispatch as useStepsDispatch } from '../../../store/stepsStore/hooks';
+import { MenuData } from '../../../types/dish';
+import { TotalGuestsOrderPrice } from '../../Molecules/TotalGuestsOrderPrice';
+import { orderIncludesEnoughDishes } from '../../../services/menuRestrictions';
 
 const Container = styled.div`
     display: flex;

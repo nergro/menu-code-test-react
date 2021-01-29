@@ -1,14 +1,14 @@
 import React, { FC, useState } from 'react';
 import styled from 'styled-components';
-import { Input } from '../Atoms/Input';
-import { P } from '../Atoms/text/P';
-import { NavigationButtons } from '../Molecules/NavigationButtons';
+import { Input } from '../../Atoms/Input';
+import { P } from '../../Atoms/text/P';
+import { NavigationButtons } from '../../Molecules/NavigationButtons';
 import {
     useDispatch as useGuestsDispatch,
     useState as useGuestsState,
-} from '../../store/guestsStore/hooks';
-import { useDispatch as useStepsDispatch } from '../../store/stepsStore/hooks';
-import { getArray } from '../../services/getArray';
+} from '../../../store/guestsStore/hooks';
+import { useDispatch as useStepsDispatch } from '../../../store/stepsStore/hooks';
+import { getArray } from '../../../services/getArray';
 
 const Form = styled.form`
     display: flex;
@@ -22,6 +22,8 @@ const Form = styled.form`
 const StyledInput = styled(Input)`
     margin-bottom: 8px;
 `;
+
+export const errorMessage = 'Please enter valid names for all guests';
 
 export const GuestForm: FC = () => {
     const [error, setError] = useState('');
@@ -37,7 +39,7 @@ export const GuestForm: FC = () => {
         if (everyGuestHasProperName) {
             stepsDispatch({ type: 'Step/Next' });
         } else {
-            setError('Please enter valid names for all guests');
+            setError(errorMessage);
         }
     };
 
