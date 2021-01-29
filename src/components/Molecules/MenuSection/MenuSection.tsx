@@ -1,12 +1,12 @@
-import React,{FC} from 'react';
-import { Dish } from '../Atoms/Dish';
-import { P } from '../Atoms/text/P';
+import React, { FC } from 'react';
+import { Dish } from '../../Atoms/Dish';
+import { P } from '../../Atoms/text/P';
 import styled from 'styled-components';
 import {
     useDispatch as useGuestsDispatch,
     useState as useGuestsState,
-} from '../../store/guestsStore/hooks';
-import { DishDTO} from '../../types/dish';
+} from '../../../store/guestsStore/hooks';
+import { DishDTO } from '../../../types/dish';
 
 const Container = styled.div`
     margin-top: 20px;
@@ -35,12 +35,12 @@ interface Props {
     dishes: DishDTO[];
 }
 
-export const MenuSection:FC<Props> = ({ className, type, dishes }) => {
+export const MenuSection: FC<Props> = ({ className, type, dishes }) => {
     const guestsDispatch = useGuestsDispatch();
     const guestsState = useGuestsState();
     const activeGuest = guestsState.guests[guestsState.activeGuest];
 
-    const onDishClick = (dish: DishDTO):void => {
+    const onDishClick = (dish: DishDTO): void => {
         guestsDispatch({
             type: 'Guests/Guest/UpdateDish',
             payload: {

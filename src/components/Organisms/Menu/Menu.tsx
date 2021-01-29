@@ -1,16 +1,15 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import menuDataJSON from '../../../../menu-data.json';
-import { MenuSection } from '../../Molecules/MenuSection';
+import { MenuSection } from '../../Molecules/MenuSection/MenuSection';
 import {
     useState as useGuestsState,
     useDispatch as useGuestsDispatch,
 } from '../../../store/guestsStore/hooks';
 import { NavigationButtons } from '../../Molecules/NavigationButtons';
 import { useDispatch as useStepsDispatch } from '../../../store/stepsStore/hooks';
-import { MenuData } from '../../../types/dish';
 import { TotalGuestsOrderPrice } from '../../Molecules/TotalGuestsOrderPrice';
 import { orderIncludesEnoughDishes } from '../../../services/menuRestrictions';
+import { MenuData } from '../../../types/menu';
 
 const Container = styled.div`
     display: flex;
@@ -47,9 +46,11 @@ const GuestButton = styled.button<GuestButtonProps>`
     }
 `;
 
-export const Menu: FC = () => {
-    const menuData: MenuData = Object.assign(new MenuData(), menuDataJSON);
+interface Props {
+    data: MenuData;
+}
 
+export const Menu: FC<Props> = ({ data }) => {
     const guestsState = useGuestsState();
     const stepsDispatch = useStepsDispatch();
     const guestsDispatch = useGuestsDispatch();
@@ -96,10 +97,10 @@ export const Menu: FC = () => {
                     </GuestButton>
                 ))}
             </Guests>
-            {Object.keys(menuData).map((key) => (
-                <MenuSection key={key} dishes={menuData[key]} type={key} />
+            {Object.keys(data).map((key) => (
+                <MenuSection key={key} dishes={data[key]} type={key} />
             ))}
-            <TotalGuestsOrderPrice />
+            <TotalGuestsOrderPrice guests={guestsState.guests} />
             <NavigationButtons
                 error={activeGuest.error}
                 onNext={() => onNextGuest(guestsState.activeGuest + 1)}

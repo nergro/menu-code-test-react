@@ -1,4 +1,3 @@
-import { Guests } from '../../types/guest';
 import { Dish } from '../../types/dish';
 import {
     dishCombinationInvalid,
@@ -7,44 +6,13 @@ import {
     orderIncludesEnoughDishes,
 } from './index';
 
-const mockedGuests: Guests = {
-    1: {
-        id: 1,
-        name: 'John',
-        dishes: {
-            1: {
-                id: 1,
-                name: 'Soup',
-                price: 3,
-                type: 'starters',
-            },
-            6: {
-                id: 6,
-                name: 'Meatballs',
-                price: 11.5,
-                type: 'mains',
-            },
-            11: {
-                id: 11,
-                name: 'Cheesecake',
-                price: 4,
-                type: 'deserts',
-            },
-        },
-        totalSum: 0,
-    },
-    2: {
-        id: 1,
-        name: 'Jack',
-        dishes: {
-            4: {
-                id: 4,
-                name: 'Prawn cocktail',
-                price: 6,
-                type: 'starters',
-            },
-        },
-        totalSum: 0,
+import { mockedGuests } from '../../mocks/mockedGuests';
+
+const guests = {
+    ...mockedGuests,
+    [2]: {
+        ...mockedGuests[2],
+        dishes: { 4: mockedGuests[2].dishes[4] },
     },
 };
 
@@ -92,7 +60,7 @@ test('should prevent adding same course dish', () => {
         type: 'starters',
     };
 
-    expect(hasSameCourseDish(dishToAdd, mockedGuests[2].dishes)).toBeTruthy();
+    expect(hasSameCourseDish(dishToAdd, guests[2].dishes)).toBeTruthy();
 });
 
 test('should prevent adding dish which is out of stock', () => {
@@ -103,7 +71,7 @@ test('should prevent adding dish which is out of stock', () => {
         type: 'deserts',
     };
 
-    expect(dishOutOfStock(dishToAdd.name, mockedGuests[2].dishes, mockedGuests)).toBeTruthy();
+    expect(dishOutOfStock(dishToAdd.name, guests[2].dishes, guests)).toBeTruthy();
 });
 
 test('should prevent adding dish which is in forbidden combination', () => {

@@ -28,10 +28,12 @@ export const reducer = (state: State, action: Action): State => {
         case 'Guests/SetActiveGuest': {
             const { guestId } = action.payload;
 
-            return {
-                ...state,
-                activeGuest: guestId,
-            };
+            return state.guests[guestId]
+                ? {
+                      ...state,
+                      activeGuest: guestId,
+                  }
+                : state;
         }
         case 'Guests/Guest/UpdateName': {
             const { guestId, name } = action.payload;

@@ -1,7 +1,3 @@
-export class MenuData {
-    [key: string]: DishDTO[];
-}
-
 export interface DishDTO {
     id: number;
     name: string;

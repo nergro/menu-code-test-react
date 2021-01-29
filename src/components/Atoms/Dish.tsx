@@ -56,7 +56,7 @@ interface Props extends ComponentPropsWithoutRef<'button'> {
 
 export const Dish: FC<Props> = ({ className, name, price, ...rest }) => {
     return (
-        <Button className={className} {...rest}>
+        <Button className={className} aria-label={name} {...rest}>
             <Span>{name}</Span>
             <StyledSpan>{price} €</StyledSpan>
         </Button>

@@ -14,21 +14,21 @@ const getGuestsInputs = (): HTMLElement[] => {
     return [firstGuestInput, secondGuestInput];
 };
 
-test('Guest form has 2 inputs', () => {
+test('should have 2 inputs', () => {
     const [firstGuestInput, secondGuestInput] = getGuestsInputs();
 
     expect(firstGuestInput).toBeInTheDocument();
     expect(secondGuestInput).toBeInTheDocument();
 });
 
-test('Guest form shows error if guests names are empty', () => {
+test('should show error if guests names are empty', () => {
     const nextButton = screen.getByRole('button', { name: 'Next' });
     fireEvent.click(nextButton);
 
     expect(screen.getByText(errorMessage)).toBeInTheDocument();
 });
 
-test('Guest form shows error if guests names are too short', () => {
+test('should show error if guests names are too short', () => {
     const [firstGuestInput, secondGuestInput] = getGuestsInputs();
     const nextButton = screen.getByRole('button', { name: 'Next' });
 
