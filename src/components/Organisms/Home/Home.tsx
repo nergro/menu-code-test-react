@@ -29,7 +29,7 @@ export const Home: FC = () => {
     const menuData: MenuData = Object.assign(new MenuData(), menuDataJSON);
 
     const steps: Record<Step, ReactElement> = {
-        guestForm: <GuestForm />,
+        guestForm: <GuestForm guestsOrder={guestsState.order} guests={guestsState.guests} />,
         menu: <Menu data={menuData} />,
         orderReview: <OrderReview guestsOrder={guestsState.order} guests={guestsState.guests} />,
         orderComplete: <OrderComplete />,

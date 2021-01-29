@@ -3,12 +3,10 @@ import styled from 'styled-components';
 import { Input } from '../../Atoms/Input';
 import { P } from '../../Atoms/text/P';
 import { NavigationButtons } from '../../Molecules/NavigationButtons';
-import {
-    useDispatch as useGuestsDispatch,
-    useState as useGuestsState,
-} from '../../../store/guestsStore/hooks';
+import { useDispatch as useGuestsDispatch } from '../../../store/guestsStore/hooks';
 import { useDispatch as useStepsDispatch } from '../../../store/stepsStore/hooks';
 import { getArray } from '../../../services/getArray';
+import { Guests } from '../../../types/guest';
 
 const Form = styled.form`
     display: flex;
@@ -25,17 +23,19 @@ const StyledInput = styled(Input)`
 
 export const errorMessage = 'Please enter valid names for all guests';
 
-export const GuestForm: FC = () => {
+interface Props {
+    guests: Guests;
+    guestsOrder: number[];
+}
+
+export const GuestForm: FC<Props> = ({ guests, guestsOrder }) => {
     const [error, setError] = useState('');
 
     const guestsDispatch = useGuestsDispatch();
-    const guestsState = useGuestsState();
     const stepsDispatch = useStepsDispatch();
 
     const onNext = (): void => {
-        const everyGuestHasProperName = getArray(guestsState.guests).every(
-            (guest) => guest.name.length > 2
-        );
+        const everyGuestHasProperName = getArray(guests).every((guest) => guest.name.length > 2);
         if (everyGuestHasProperName) {
             stepsDispatch({ type: 'Step/Next' });
         } else {
@@ -50,18 +50,15 @@ export const GuestForm: FC = () => {
         <>
             <P>Welcome! Please enter your names</P>
             <Form>
-                <StyledInput
-                    type="text"
-                    placeholder="Guest 1"
-                    onChange={(e) => onGuestChange(1, e.target.value)}
-                    value={guestsState.guests[1].name}
-                />
-                <StyledInput
-                    type="text"
-                    placeholder="Guest 2"
-                    onChange={(e) => onGuestChange(2, e.target.value)}
-                    value={guestsState.guests[2].name}
-                />
+                {guestsOrder.map((x) => (
+                    <StyledInput
+                        key={x}
+                        type="text"
+                        placeholder={`Guest ${x}`}
+                        onChange={(e) => onGuestChange(x, e.target.value)}
+                        value={guests[x].name}
+                    />
+                ))}
             </Form>
             <NavigationButtons onNext={onNext} error={error} previousDisabled />
         </>

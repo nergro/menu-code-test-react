@@ -10,6 +10,7 @@ import { useDispatch as useStepsDispatch } from '../../../store/stepsStore/hooks
 import { TotalGuestsOrderPrice } from '../../Molecules/TotalGuestsOrderPrice';
 import { orderIncludesEnoughDishes } from '../../../services/menuRestrictions';
 import { MenuData } from '../../../types/menu';
+import { P } from '../../Atoms/text/P';
 
 const Container = styled.div`
     display: flex;
@@ -22,27 +23,19 @@ const Guests = styled.div`
     justify-content: center;
 `;
 
-interface GuestButtonProps {
+interface GuestLabelProps {
     isActive?: boolean;
 }
 
-const GuestButton = styled.button<GuestButtonProps>`
-    border: none;
-    background: none;
+const GuestLabel = styled(P)<GuestLabelProps>`
     padding: 5px;
-    font: ${(props) => props.theme.fonts.mediumTextSemiBold};
+    margin: 0;
     color: ${(props) =>
         props.isActive ? props.theme.colors.accents.primary : props.theme.colors.accents.secondary};
-    cursor: pointer;
     transition: all 0.3s ease;
-    outline: none;
 
     &:not(:last-child) {
         margin-right: 10px;
-    }
-
-    &:hover {
-        opacity: 0.8;
     }
 `;
 
@@ -88,13 +81,14 @@ export const Menu: FC<Props> = ({ data }) => {
         <Container>
             <Guests>
                 {orderedGuests.map((guest) => (
-                    <GuestButton
+                    <GuestLabel
                         key={guest.id}
                         isActive={guest.id === guestsState.activeGuest}
-                        onClick={() => onNextGuest(guest.id)}
+                        size="medium"
+                        weight="500"
                     >
                         {guest.name}
-                    </GuestButton>
+                    </GuestLabel>
                 ))}
             </Guests>
             {Object.keys(data).map((key) => (

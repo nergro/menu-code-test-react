@@ -27,7 +27,7 @@ export const mockedGuests: Guests = {
         totalSum: 18.5,
     },
     2: {
-        id: 1,
+        id: 2,
         name: 'Jack',
         dishes: {
             4: {

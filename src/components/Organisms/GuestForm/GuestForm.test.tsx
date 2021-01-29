@@ -2,23 +2,16 @@ import { GuestForm, errorMessage } from './GuestForm';
 import React from 'react';
 import { renderComponent } from '../../../services/testUtils';
 import { screen, fireEvent } from '@testing-library/react';
+import { initialState } from '../../../store/guestsStore/provider';
 
 beforeEach(() => {
-    renderComponent(<GuestForm />);
+    renderComponent(<GuestForm guestsOrder={initialState.order} guests={initialState.guests} />);
 });
 
-const getGuestsInputs = (): HTMLElement[] => {
-    const firstGuestInput = screen.getByPlaceholderText('Guest 1');
-    const secondGuestInput = screen.getByPlaceholderText('Guest 2');
+test('should have correct amount of inputs', () => {
+    const inputs = screen.getAllByPlaceholderText('Guest', { exact: false });
 
-    return [firstGuestInput, secondGuestInput];
-};
-
-test('should have 2 inputs', () => {
-    const [firstGuestInput, secondGuestInput] = getGuestsInputs();
-
-    expect(firstGuestInput).toBeInTheDocument();
-    expect(secondGuestInput).toBeInTheDocument();
+    expect(inputs.length).toBe(initialState.order.length);
 });
 
 test('should show error if guests names are empty', () => {
@@ -29,7 +22,9 @@ test('should show error if guests names are empty', () => {
 });
 
 test('should show error if guests names are too short', () => {
-    const [firstGuestInput, secondGuestInput] = getGuestsInputs();
+    const [firstGuestInput, secondGuestInput] = screen.getAllByPlaceholderText('Guest', {
+        exact: false,
+    });
     const nextButton = screen.getByRole('button', { name: 'Next' });
 
     fireEvent.change(firstGuestInput, { target: { value: 'John' } });
